@@ -1,10 +1,10 @@
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const db = require('./db')
 const employeeRouter = require('./routes/employee-router')
+const reservationRouter = require('./routes/reservation-router')
 
 const app = express()
 const apiPort = 3000
@@ -20,5 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', employeeRouter)
+app.use('/api', reservationRouter)
+
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))

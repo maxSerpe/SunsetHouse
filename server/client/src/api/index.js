@@ -4,18 +4,18 @@ const api = axios.create({
     baseURL: 'http://localhost:3000/api',
 })
 
-export const insertEmployee = payload => api.post(`/employee`, payload)
-export const getAllEmployees = () => api.get(`/employees`)
-export const updateEmployeeById = (id, payload) => api.put(`/employee/${id}`, payload)
-export const deleteEmployeeById = id => api.delete(`/employee/${id}`)
-export const getEmployeeById = id => api.get(`/employee/${id}`)
+export const insertReservation = payload => api.post(`/reservation`, payload)
+export const getAllReservations = () => api.get(`/reservations`)
+export const updateReservationById = (id, payload) => api.put(`/reservation/${id}`, payload)
+export const deleteReservationById = id => api.delete(`/reservation/${id}`)
+export const getReservationById = id => api.get(`/reservation/${id}`)
 
 const apis = {
-    insertEmployee,
-    getAllEmployees,
-    updateEmployeeById,
-    deleteEmployeeById,
-    getEmployeeById,
+    insertReservation,
+    getAllReservations,
+    updateReservationById,
+    deleteReservationById,
+    getReservationById
 }
 
 export default apis
