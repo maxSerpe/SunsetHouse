@@ -1,0 +1,48 @@
+
+.DateRangePicker {
+    width: 100%;
+}
+.DateRangePicker__Month {
+    width: 100%;
+    margin: 0px;
+    padding: 0px 50px;
+}
+.DateRangePicker__CalendarSelection {
+    background-color: #4285f4;
+    border: #4285f4;
+}
+
+.DateRangePicker__PaginationArrow--previous {
+    margin-left: 19px;
+}
+.DateRangePicker__PaginationArrow--next {
+    margin-right: 19px;
+}
+
+.DateRangePicker__CalendarSelection--segment {
+    background-color: #4285f46b;
+    border:  #4285f46b;
+}
+
+.DateRangePicker__Date--is-highlighted{
+    /* border:  #4285f4; 
+    background-color: #4285f46b; */
+    color: white;
+}
+.DateRangePicker__Date--is-selected{
+    /* border:  #4285f4; */
+    /* background-color: #4285f46b; */
+    /* color: white; */
+}
+
+.DateRangePicker__CalendarHighlight--single{
+    /* border:  #003308; */
+    /* background-color: #4285f46b; */
+    color: white;
+}
+.DateRangePicker__CalendarHighlight{
+    border: none !important; 
+    border-width: 2px;
+    background-color: #4285f4 ;
+    color: white;
+}

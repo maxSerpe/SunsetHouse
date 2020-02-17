@@ -1,12 +1,9 @@
 import React, { Component} from 'react'
-import styled from 'styled-components'
 
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import Logo from './Logo'
 
 const rowStyle = {
     padding: "46px",
@@ -40,15 +37,15 @@ class Footer extends Component {
                 <Col xl='2' lg='1' sm='0'></Col>
                 <Col xl='4'lg='5' style={colStyle} id="yui_3_17_2_1_1580645438987_1609">
                     instagram: 
-                    <a style={aStyle} href="https://www.instagram.com/sunsethouselaunion/" target="_blank" id="yui_3_17_2_1_1580645438987_1608" > @sunsethouselaunion </a> 
+                    <a style={aStyle} href="https://www.instagram.com/sunsethouselaunion/" id="yui_3_17_2_1_1580645438987_1608" > @sunsethouselaunion </a> 
                      facebook: 
-                    <a style={aStyle} href="https://www.facebook.com/VesselHostel" target="_blank">&nbsp;/sunsethouselaunion&nbsp;</a> 
+                    <a style={aStyle} href="https://www.facebook.com/VesselHostel">&nbsp;/sunsethouselaunion&nbsp;</a> 
                 </Col>
                 <Col xl='4' lg='5' style={colStyle} id="yui_3_17_2_1_1580645438987_1609">
                     official photos by 
-                    <a style={aStyle} href="https://www.instagram.com/billygupita/" target="_blank">&nbsp;Lola Liegaillao(?)&nbsp;</a>
+                    <a style={aStyle} href="https://www.instagram.com/billygupita/">&nbsp;Lola Liegaillao(?)&nbsp;</a>
                     and
-                    <a style={aStyle} href="https://www.instagram.com/mtouano/" target="_blank"> Jerik Robleza </a>
+                    <a style={aStyle} href="https://www.instagram.com/mtouano/"> Jerik Robleza </a>
                 </Col>
                 <Col xl='2' lg='1' sm='0'></Col>
             </Row>

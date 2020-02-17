@@ -1,22 +1,35 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import {NavBar, Footer} from '../components'
-import { ImageSlider, EmployeesList, EmployeesInsert, EmployeesUpdate } from '../pages'
+import {NavBar} from '../components'
+import { ImageBoxes, Booking, Contact, BookingComplete, BookingFailed, Reservations, Reservation} from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+
+const containerStyle = {
+    marginTop:"20px",
+    marginBottom:"20px",
+    paddingLeft: "9vw",
+    paddingRight: "9vw",
+    width:"100%"
+} 
 
 function App() {
     return (
         <Router>
-            <NavBar/>
-            <Switch>
-                <Route path="/" exact component={ImageSlider} />
-                <Route path="/employees/list" exact component={EmployeesList} />
-                <Route path="/employees/create" exact component={EmployeesInsert} />
-                <Route path="/employees/update/:id" exact component={EmployeesUpdate} />
-            </Switch>
-            <Footer/>
+            <div style={containerStyle}>
+                <NavBar/>
+                <Switch>
+                    <Route path="/" exact component={ImageBoxes} />
+                    <Route path="/booking" exact component={Booking} />
+                    <Route path="/reservations" exact component={Reservations} />
+                    <Route path="/reservation/:id" exact component={Reservation} />
+                    <Route path="/contact" exact component={Contact} />
+                    <Route path="/bookingComplete" exact component={BookingComplete} />
+                    <Route path="/bookingFailed" exact component={BookingFailed} />                    
+                </Switch>
+                {/* <Footer/> */}
+            </div>
         </Router>
     )
 }
