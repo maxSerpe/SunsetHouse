@@ -5,7 +5,7 @@
 .DateRangePicker__Month {
     width: 100%;
     margin: 0px;
-    padding: 0px 50px;
+    padding: 0px 0px;
 }
 .DateRangePicker__CalendarSelection {
     background-color: #4285f4;
@@ -13,10 +13,9 @@
 }
 
 .DateRangePicker__PaginationArrow--previous {
-    margin-left: 19px;
+    text-align:"left !important";
 }
 .DateRangePicker__PaginationArrow--next {
-    margin-right: 19px;
 }
 
 .DateRangePicker__CalendarSelection--segment {

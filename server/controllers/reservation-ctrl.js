@@ -93,10 +93,24 @@ getReservations = async (req, res) => {
         return res.status(200).json({ success: true, data: reservations })
     }).catch(err => console.log(err))
 }
+getApprovedReservations = async (req, res) => {
+    await Reservation.find({"approved": true}, (err, reservations) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!reservations.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Reservation not found` })
+        }
+        return res.status(200).json({ success: true, data: reservations })
+    }).catch(err => console.log(err))
+}
 
 module.exports = {
     createReservation,
     deleteReservation,
     getReservations,
     getReservationById,
+    getApprovedReservations
 }

@@ -9,5 +9,6 @@ router.put('/reservation/:id', ReservationCtrl.deleteReservation)
 router.delete('/reservation/:id', ReservationCtrl.deleteReservation)
 router.get('/reservation/:id', ReservationCtrl.getReservationById)
 router.get('/reservations', ReservationCtrl.getReservations)
+router.get('/approvedReservations', ReservationCtrl.getApprovedReservations)
 
 module.exports = router

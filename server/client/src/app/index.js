@@ -9,11 +9,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const containerStyle = {
     marginTop:"20px",
     marginBottom:"20px",
-    paddingLeft: "9vw",
-    paddingRight: "9vw",
+    paddingLeft: "17vw",
+    paddingRight: "17vw",
     width:"100%"
 } 
-
 function App() {
     return (
         <Router>
