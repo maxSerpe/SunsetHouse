@@ -7,10 +7,10 @@ import { ImageBoxes, Booking, Contact, BookingComplete, BookingFailed, Reservati
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const containerStyle = {
-    marginTop:"20px",
+    marginTop:"18px",
     marginBottom:"20px",
-    paddingLeft: "17vw",
-    paddingRight: "17vw",
+    paddingLeft: "18vw",
+    paddingRight: "18vw",
     width:"100%"
 } 
 function App() {

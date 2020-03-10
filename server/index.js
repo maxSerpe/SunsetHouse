@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const db = require('./db')
-const employeeRouter = require('./routes/employee-router')
 const reservationRouter = require('./routes/reservation-router')
 
 const app = express()
@@ -19,7 +18,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.use('/api', employeeRouter)
 app.use('/api', reservationRouter)
 
 

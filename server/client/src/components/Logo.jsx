@@ -10,7 +10,7 @@ class Logo extends Component {
     render() {
         return (
             <Wrapper href="/">
-                <img src={logo} width="90" height="50" margin-left="0px"/>
+                <img src={logo} alt='' width="90" height="50" margin-left="0px"/>
             </Wrapper>
         )
     }

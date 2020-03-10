@@ -8,23 +8,25 @@ createReservation = (req, res) => {
             error: 'You must provide a reservation',
         })
     }
+    let checkInDate = new Date(body.checkInDate)
+    let checkOutDate = new Date(body.checkOutDate)
 
-    let start = new Date(body.start)
-    let end = new Date(body.end)
-
-    let guestName = body.guestName
-    if(guestName.length == 0) {
-        guestName = "Guest name not recorded"
-    } 
-
+    // TODO need to decide where we are calculating numDays, right now considering 
+    // either here in contorler, or leave it up to the react componenet, seeing as it 
+    // might need that information as it is to display/calculate prices
+    
     let reservationObj = {     
-        "guestName": guestName,     
-        "startDate": start,     
-        "endDate": end,     
-        "numGuests": body.numGuests,     
-        "numDays": body.numDays,     
-        "totalPayment": body.totalPayment,
-        "pricePerDay": body.pricePerDay,
+        "fullName": body.fullName,     
+        "checkInDate": checkInDate,     
+        "checkOutDate": checkOutDate,     
+        "numberBeds": body.numberBeds,   
+        "instagram": body.instagram,
+        "email": body.email,  
+        "address": body.address,  
+        "phoneNumber":body.phoneNumber,
+        "numDays": 0,     
+        "totalPayment": 0,
+        "pricePerDay": 0,
         "approved": false
     }
     const reservation = new Reservation(reservationObj)
@@ -47,6 +49,46 @@ createReservation = (req, res) => {
                 message: 'Something went wrong!',
             })
         })
+}
+
+updateReservationById = async (req, res) => {
+    const body = req.body
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a reservation',
+        })
+    }
+    await Reservation.findOne({ _id: body._id }, async (err, reservation) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+
+        if (!reservation) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Reservation not found` })
+        }
+        let checkInDate = new Date(body.checkInDate)
+        let checkOutDate = new Date(body.checkOutDate)
+
+        reservation.fullName =  body.fullName     
+        reservation.checkInDate =  checkInDate     
+        reservation.checkOutDate =  checkOutDate     
+        reservation.numberBeds =  body.numberBeds   
+        reservation.instagram =  body.instagram
+        reservation.email =  body.email  
+        reservation.address =  body.address  
+        reservation.phoneNumberbody = body.phoneNumber,
+
+        await reservation.save()
+        .then(() => {
+            return res.status(200).json({ success: true})
+          })
+          .catch(error => {
+            return res.status(400).json({ success: false, error: err })
+          })
+   }).catch(err => console.log(err))
 }
 
 deleteReservation = async (req, res) => {
@@ -112,5 +154,6 @@ module.exports = {
     deleteReservation,
     getReservations,
     getReservationById,
-    getApprovedReservations
+    getApprovedReservations,
+    updateReservationById
 }

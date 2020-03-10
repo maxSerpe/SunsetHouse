@@ -7,7 +7,7 @@ const api = axios.create({
 export const insertReservation = payload => api.post(`/reservation`, payload)
 export const getAllReservations = () => api.get(`/reservations`)
 export const getApprovedReservations = () => api.get(`/approvedReservations`)
-export const updateReservationById = (id, payload) => api.put(`/reservation/${id}`, payload)
+export const updateReservationById = payload => api.put(`/reservation`, payload)
 export const deleteReservationById = id => api.delete(`/reservation/${id}`)
 export const getReservationById = id => api.get(`/reservation/${id}`)
 

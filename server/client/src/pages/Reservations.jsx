@@ -4,14 +4,9 @@ import api from '../api'
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import styled from 'styled-components'
+import dateFormat from 'dateformat'
 
 import 'react-table-6/react-table.css'
-import originalMoment from "moment";
-import { extendMoment } from "moment-range";
-
-// TODO reseve this moment crap
-var moment = require('moment');
-const otherMoment = extendMoment(originalMoment);
 
 const Wrapper = styled.div`
     padding: 0 0px 0px 0px;
@@ -54,8 +49,9 @@ class ReservationType extends Component {
     }
 
     reduceReservations = async (reservations, type) => {
-        const today = otherMoment();
         var reservationsReduced = []
+
+        const today = new Date()
 
         reservations.forEach(function(value){
             if(type === 'enquiry'){
@@ -63,21 +59,21 @@ class ReservationType extends Component {
                     reservationsReduced.push(value);
                 }
             }else if(type === 'upcoming'){
-                if (moment(value['startDate']) > today) {
+                if (new Date(value['checkInDate']) > today) {
                     if(value['approved'] === true) {
                         reservationsReduced.push(value);
                     }
                 }
             }else if(type === 'current'){
-                if (moment(value['startDate']) < today) {
-                    if (moment(value['endDate']) > today) {
+                if (new Date(value['checkInDate']) < today) {
+                    if (new Date(value['checkOutDate']) > today) {
                         if( value['approved'] === true) {
                             reservationsReduced.push(value);
                         }
                     }
                 }
             }else if(type === 'past'){
-                if (moment(value['endDate']) < today) {
+                if (new Date(value['checkOutDate']) < today) {
                     if (value['approved'] === true) {
                         reservationsReduced.push(value);
                     }
@@ -86,29 +82,24 @@ class ReservationType extends Component {
         })
         return reservationsReduced
     }
-
+    // TODO GET DATE FORMATING FOR TABLE
     render() {
         const { reservations, isLoading } = this.state
         const columns = [
-            // {
-            //     Header: 'ID',
-            //     accessor: '_id',
-            //     filterable: true,
-            // },
             {
                 Header: 'Name',
                 minWidth: 150,
                 Cell: function(props) {
                     return (
                         <span>
-                            <a href={'/reservation/' + props.original._id}>{props.original.guestName}</a>
+                            <a href={'/reservation/' + props.original._id}>{props.original.fullName}</a>
                         </span>
                     )
                 }
             },
             {
                 Header: '# Guests',
-                accessor: 'numGuests',
+                accessor: 'numberBeds',
                 maxWidth: 80,
             },
             {
@@ -116,7 +107,7 @@ class ReservationType extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <div>{moment(props.original.startDate).calendar('YYYY-MM-DD')}</div>
+                            <div>{dateFormat(props.original.checkInDate, "mm-dd-yyyy")}</div>
                         </span>
                     )
                 },
@@ -127,7 +118,7 @@ class ReservationType extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <div>{moment(props.original.endDate).calendar('YYYY-MM-DD')}</div>
+                            <div>{dateFormat(props.original.checkOutDate, "mm-dd-yyyy")}</div>
                         </span>
                     )
                 },
@@ -144,7 +135,7 @@ class ReservationType extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <div>{moment(props.original.createdAt).format('ll LTS')}</div>
+                            <div>{dateFormat(props.original.createdAt, "mm-dd-yyyy")}</div>
                         </span>
                     )
                 },

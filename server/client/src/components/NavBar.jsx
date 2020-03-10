@@ -1,19 +1,29 @@
 import React, { Component} from 'react'
 import { Link } from 'react-router-dom'
 
-import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Logo from './Logo'
 
-const linkStyle = {
+const linkStyleInquiry = {
     fontWeight: "200",
     fontStyle: "normal",
-    letterSpacing: ".03em",
     textTransform: "none",
     lineHeight: '1em',
     color: "#535252",
+    letterSpacing: "0.07em",
+    textDecoration: "none"
+}
+const linkStyleContact = {
+    fontWeight: "200",
+    fontStyle: "normal",
+    textTransform: "none",
+    lineHeight: '1em',
+    color: "#535252",
+    letterSpacing: "0.05em",
+    paddingLeft: "2px",
+    textDecoration: "none"
 }
 
 const rowStyle = {
@@ -26,28 +36,24 @@ const rowStyle = {
 
 const noStyle = {
     paddingTop: "37px",
-    paddingLeft: "10px",
+    paddingLeft: "17px",
     verticalAlign: "baseline",
-    fontSize: "11px",
-
-}
-const topStyle ={
-    
+    fontSize: "11px"
 }
 // paddingTop: "30px"
 
 class NavBar extends Component {
     render() {
         return (
-            <div style={topStyle}>
+            <div>
                     <Row style={rowStyle}>
                     <Logo/>
                         <div style={noStyle}>
-                            <Link style={linkStyle} to="/booking">
-                                BOOKING
+                            <Link style={linkStyleInquiry} to="/booking">
+                                INQUIRY
                             </Link>
                             &nbsp;|&nbsp;
-                            <Link style={linkStyle} to="/contact">
+                            <Link style={linkStyleContact} to="/contact">
                                 CONTACT
                             </Link>
                         </div>

@@ -1,17 +1,12 @@
 import React from 'react'
 import DateRangePicker from "react-daterange-picker";
 import "react-daterange-picker/dist/css/react-calendar.css";
-import originalMoment from "moment";
-import { extendMoment } from "moment-range";
 import styled from 'styled-components'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 import api from '../api';
 import './ReservationInformation.css';
-
-
-const moment = extendMoment(originalMoment);
+const moment = require('moment-timezone');
 
 const SelectionValueBox = styled.div`
 min-height: 30px;   
@@ -20,11 +15,6 @@ const TotalPaymentBox = styled.div`
 min-height: 30px;  
 line-height: 40px;
 `
-
-const rowStyle = {
-paddingTop: "10px",
-paddingBottom: "10px",
-}
 
 const bedsStyle = {
 textAlign: "left",
@@ -57,7 +47,22 @@ class ReservationInformation extends React.Component {
       guestName:props.state.guestName,
       dateStates:[],
       bedsOccupiedByDate:{},
-    };
+      stateDefinitions:{
+        available: {
+          color: null,
+          label: 'Available',
+        },
+        selected: {
+          color: "#4285f4",
+          label: 'Selected',
+        },
+        unavailable: {
+          selectable: false,
+          color: '#78818b',
+          label: 'Unavailable',
+        },
+      }
+    }
   }
   componentDidMount = async () => {
     // get all approved reservations
@@ -68,19 +73,23 @@ class ReservationInformation extends React.Component {
 
     // for each res, add # of beds to each date in reservation (save the checkout date) 
     reservations.forEach(function(value){
-      let startDate = moment(value['startDate'])
-      let endDate = moment(value['endDate'])
+      let startDate = moment.parseZone(value['startDate'], "YYYY-MM-DDTHH:mm:ss.SSSSZ", 'Asia/Manila')
+      let endDate = moment.parseZone(value['endDate'], "YYYY-MM-DDTHH:mm:ss.SSSSZ", 'Asia/Manila')
       let beds = value['numGuests']
-      if (startDate.format('L') === endDate.format('L')) {
+      if (startDate.toString() === endDate.toString()) {
         console.log('still have test res in the database')
       } else {
-        while(startDate < endDate.subtract(1, 'days')){
-          if(startDate.format('L') in bedsOccupiedByDate) {
-            bedsOccupiedByDate[startDate.format('L')] = bedsOccupiedByDate[startDate.format('L')] + beds
+        while(startDate < endDate){
+          if(startDate.toString() in bedsOccupiedByDate) {
+            let key = startDate.toString()
+            bedsOccupiedByDate[key]["bedsOccupied"] = bedsOccupiedByDate[key]["bedsOccupied"] + beds
           } else {
-            bedsOccupiedByDate[startDate.format('L')] = beds
+            bedsOccupiedByDate[startDate.toString()] = { 
+              "bedsOccupied": beds
+            }
+            
           }
-          startDate = startDate.add(1, 'days')
+          startDate.add(1, 'days')
         } 
       }
       
@@ -88,28 +97,36 @@ class ReservationInformation extends React.Component {
     // add this dictionary to state 
     this.setState({bedsOccupiedByDate})
     // calling update availability ranges
-    this.updateAvailabilityRanges()
+    this.updateAvailabilityRanges(this.state.numGuests)
   }
 
-  updateAvailabilityRanges = () => {
-    // get #guests from state
-    let numbGuests = this.state.numGuests
-    // get reservation count by day dict from state
-    let bedsOccupiedByDate = this.state.bedsOccupiedByDate
-    // create new/empty dateStates dict
-    let dateStates = []
-    // check each dictionary value to see if # of guests + current res > 14
-    for(var key in bedsOccupiedByDate) {
-      if(bedsOccupiedByDate[key] + numbGuests > 14) {
-        // if so, add that date to the dateStates 
-        dateStates.push({
-          state: 'unavailable',
-          range: moment.range(moment(key),moment(key).add(1, 'days'))
-        })
-      }
-    }
-    // set the dateStates in state
-    this.setState(dateStates)
+  updateAvailabilityRanges = async (numGuests) => {
+    numGuests = parseInt(numGuests)
+    // // get reservation count by day dict from state
+    // let bedsOccupiedByDate = this.state.bedsOccupiedByDate
+    // // create new/empty dateStates dict
+    // let dateStates = []
+    // // check each dictionary value to see if # of guests + current res > 14
+    // let dateRangeFlag = false
+    // let dateRange = this.state.dateRange   
+    // for ( value in bedsOccupiedByDate) {
+    //   if(bedsOccupiedByDate[value]["bedsOccupied"] + numGuests > 14) {
+    //     // if so, add that date to the dateStates (pass via string because Moment is scary)
+    //     let currentMoment = moment(value)
+    //     dateStates.push({
+    //       selectable: false,
+    //       state: 'unavailable',
+    //       range: moment.range(currentMoment.clone(),currentMoment.clone().add(1, 'days'))
+    //     })
+    //     if(currentMoment.isBetween(this.state.dateRange.start.startOf('day'), this.state.dateRange.end.startOf('day'))){
+    //       if(currentMoment.isBetween(this.state.dateRange.start.startOf('day'), this.state.dateRange.end.startOf('day'))){
+    //       dateRange.start = currentMoment.clone().add(1, 'days')
+    //     }
+    //   }
+    // };
+
+    // this.setState({dateStates, dateRange})
+    // }
   }
 
   guestSelect = (numGuests) => {
@@ -117,7 +134,7 @@ class ReservationInformation extends React.Component {
     let totalPayment = numGuests * this.state.numDays * this.state.pricePerDay
     this.setState({numGuests, totalPayment});
     this.props.hoistState({"numGuests":numGuests, "totalPayment":totalPayment})
-    this.updateAvailabilityRanges()
+    this.updateAvailabilityRanges(numGuests)
   };
   nameInput = (guestName) => {
     guestName = guestName.nativeEvent.target.value
@@ -153,16 +170,30 @@ class ReservationInformation extends React.Component {
     );
   };
   renderSelectionValue = () => {
+    let dateRange = "nothing"
+    if(Object.keys(this.state.dateRange).length === 0) {
+      const today = moment();
+      let todaysDate = today.clone()
+      dateRange = 
+        <div style={dateBoxStyle}>
+        {todaysDate.format("YYYY-MM-DD")}
+        {" : "}
+        {todaysDate.format("YYYY-MM-DD")}
+        </div>
+    } else {
+      dateRange = 
+        <div style={dateBoxStyle}>
+        {this.state.dateRange.start.format("YYYY-MM-DD")}
+        {" : "}
+        {this.state.dateRange.end.format("YYYY-MM-DD")}
+        </div>
+    }
     return (
       <SelectionValueBox>
         <div style={bedsStyle}>
           {this.renderBedSelect()}
         </div>
-        <div style={dateBoxStyle}>
-          {this.state.dateRange.start.format("YYYY-MM-DD")}
-          {" : "}
-          {this.state.dateRange.end.format("YYYY-MM-DD")}
-        </div>
+        {dateRange}
       </SelectionValueBox>
     );
   };
@@ -179,7 +210,34 @@ class ReservationInformation extends React.Component {
       </TotalPaymentBox>
     );
   };
+  renderCalendar = () => {
+    if (Object.keys(this.state.dateRange).length === 0) {
+      return (
+      <DateRangePicker
+        value={this.state.dateRange}
+        onSelect={this.onSelect}
+        singleDateRange={true}
+        numberOfCalendars={1}
+        dateStates={this.state.dateStates}
+        stateDefinitions={this.state.stateDefinitions}
+        defaultState="available"
+        selectionType='range'
+        />);
+    } else {
+      return (<DateRangePicker
+        value={this.state.dateRange}
+        onSelect={this.onSelect}
+        singleDateRange={true}
+        numberOfCalendars={1}
+        dateStates={this.state.dateStates}
+        stateDefinitions={this.state.stateDefinitions}
+        defaultState="available"
+        selectionType='range'
+        />);
+    }
+  }
   render() {
+    
     return (
       <Row style={{width:"100%", margin:'0px'}}>
         <Col l={6} m={12} style={{paddingLeft:"20px"}}>
@@ -191,13 +249,9 @@ class ReservationInformation extends React.Component {
           <div>{this.renderTotalPayment()}</div>
         </Col>
         <Col l={6} m={12}>
-          <DateRangePicker
-            value={this.state.dateRange}
-            onSelect={this.onSelect}
-            singleDateRange={true}
-            numberOfCalendars={1}
-          />
+          {this.renderCalendar()}
         </Col>
+        
         
       </Row>
     )
