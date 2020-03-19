@@ -1,6 +1,7 @@
 const Reservation = require('../models/reservation-model')
 
 createReservation = (req, res) => {
+    console.log("we made it here")
     const body = req.body
     if (!body) {
         return res.status(400).json({

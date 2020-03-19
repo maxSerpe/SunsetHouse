@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import {NavBar} from '../components'
-import { ImageBoxes, Booking, Contact, BookingComplete, BookingFailed, Reservations, Reservation} from '../pages'
+import { ImageBoxes, Inquiry, Contact, BookingComplete, BookingFailed, Reservations, Reservation} from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -20,7 +20,7 @@ function App() {
                 <NavBar/>
                 <Switch>
                     <Route path="/" exact component={ImageBoxes} />
-                    <Route path="/booking" exact component={Booking} />
+                    <Route path="/inquiry" exact component={Inquiry} />
                     <Route path="/reservations" exact component={Reservations} />
                     <Route path="/reservation/:id" exact component={Reservation} />
                     <Route path="/contact" exact component={Contact} />

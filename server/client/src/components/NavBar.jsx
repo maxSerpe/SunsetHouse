@@ -49,7 +49,7 @@ class NavBar extends Component {
                     <Row style={rowStyle}>
                     <Logo/>
                         <div style={noStyle}>
-                            <Link style={linkStyleInquiry} to="/booking">
+                            <Link style={linkStyleInquiry} to="/inquiry">
                                 INQUIRY
                             </Link>
                             &nbsp;|&nbsp;
