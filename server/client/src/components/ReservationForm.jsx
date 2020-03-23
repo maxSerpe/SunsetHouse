@@ -8,7 +8,7 @@ import dateFormat from 'dateformat'
 
 const fieldStyle = {
   width:"57%",
-  minWidth:"168px",
+  width:"168px",
   borderColor: "#d3d3d3",
   borderWidth: '.0937499em',
   color:'#535353',
@@ -36,6 +36,8 @@ const fieldColStyle = {
   padding:"0px",
   height: "1.44em",
   marginRight: "20px",
+  borderBottom: "1px solid #d3d3d3",
+  maxWidth: "250px"
 }
 const rowStyle = {
   width: "100%"
@@ -59,13 +61,17 @@ const errorStyle = {
 }
 
 const FormFields = (initialValues, inputType, style, name, text) => {
+  let placeholder = ''
+  if(inputType==='date'){
+    placeholder="mm-dd-yyyy"
+  }
   return(
       <Row style = {rowStyle}>
         <div style={labelColStyle}>
           <label htmlFor={name} style={labelStyle}>{text}</label>
         </div>
         <div style={fieldColStyle}>
-          <Field name={name} type={inputType} style={style} initialvalue={initialValues[name]} />
+          <Field name={name} type={inputType} style={style} placeholder={placeholder} initialvalue={initialValues[name]} />
         </div>
         <div style={errorStyle}>
           <ErrorMessage name={name}/>
@@ -107,8 +113,8 @@ const ReservationForm = (values) => {
   let title = values.title
   if(formType === 'updateCancel') {
     initialValues = { fullName: data.fullName, email: data.email, address: data.address, instagram: data.instagram, 
-                        checkInDate: dateFormat(data.checkInDate, "mm-dd-yyyy"), 
-                        checkOutDate: dateFormat(data.checkOutDate, "mm-dd-yyyy"), 
+                        checkInDate: dateFormat(data.checkInDate, "yyyy-mm-dd"), 
+                        checkOutDate: dateFormat(data.checkOutDate, "yyyy-mm-dd"), 
                         numberBeds: data.numberBeds, phoneNumber: data.phoneNumber}
   } else {
     initialValues = { fullName: '', email: '', address: '', instagram:'', 
@@ -175,8 +181,8 @@ const ReservationForm = (values) => {
           {FormFields(initialValues, "text", fieldStyle, "address", "ADDRESS")}
           {FormFields(initialValues, "text", fieldStyle, "email", "EMAIL")}
           {FormFields(initialValues, "text", fieldStyle, "instagram", "INSTAGRAM")}
-          {FormFields(initialValues, "text", fieldStyle, "checkInDate", "CHECK-IN DATE")}
-          {FormFields(initialValues, "text", fieldStyle, "checkOutDate", "CHECK-OUT DATE")}
+          {FormFields(initialValues, "date", fieldStyle, "checkInDate", "CHECK-IN DATE")}
+          {FormFields(initialValues, "date", fieldStyle, "checkOutDate", "CHECK-OUT DATE")}
           {FormFields(initialValues, "text", fieldStyle, "numberBeds", "NUMBER OF BEDS")}
           
           {}

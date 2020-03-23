@@ -621,20 +621,18 @@ button[type="reset"]:hover {
 input[type="email"],
 input[type="text"],
 input[type="number"],
+input[type="date"],
 textarea,
 select {
   width: 100%;
+  height: 85%;
   max-width: 250px;
-  height: 12px;
   border: none;
-  border-bottom: 1px solid #000000;
-  padding: 8px;
   font-size: 14px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   color:#3b3b3b;
-  overflow: visible;
   font-weight: lighter;
   
 }
